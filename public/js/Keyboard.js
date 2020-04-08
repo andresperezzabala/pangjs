@@ -38,9 +38,11 @@ export class Keyboard {
 
         this.keyStates.set(code,keyState);
 
-        if (event.type !== 'keyup'){
+        if (code === 'ArrowRight'|| code === 'ArrowLeft'){
             this.keyMap.get(code)(keyState);
-            console.log(this.keyStates);
+        }else if(event.type !== 'keyup'){
+            this.keyMap.get(code)(keyState);
+            console.log(code);
         }
     }
 

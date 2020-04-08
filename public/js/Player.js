@@ -8,7 +8,7 @@ export default class Player extends Object2D {
         super(size, pos);
         this.force = new Vec2D(0, 0);
         this.sprite = sprite;
-        this.direction = new Vec2D(1,0);
+        this.direction = new Vec2D(0,0);
     }
 
     // time respresenta el tiempo que ha pasado desde la última ejecución
