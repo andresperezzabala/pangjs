@@ -1,7 +1,7 @@
 import SpriteSheet from "./SpriteSheet.js";
 import Player from "./Player.js";
 import {Vec2D} from "./math.js";
-import Settings from "./Settings.js";
+import {Ball} from "./Ball.js";
 
 export function loadLevel(currentLevel) {
     return fetch('levels/' +  currentLevel + '.json').then(r => r.json());
@@ -31,4 +31,10 @@ export function  loadBuster(image,playerSpec) {
 
     return new Player(size,pos,spriteSheet);
 
+}
+
+export function loadBalls(ballsSpec) {
+    let balls = [];
+    ballsSpec.forEach(ball => balls.push(new Ball(ball.radius, new Vec2D(ball.pos[0],ball.pos[1]), new Vec2D(ball.force[0], ball.force[1]))));
+    return balls;
 }
