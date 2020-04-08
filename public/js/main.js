@@ -1,4 +1,4 @@
-import {loadBuster, loadImage} from "./loaders.js";
+import {loadBuster, loadImage, loadLevel} from "./loaders.js";
 import Settings from "./Settings.js";
 import {setupKeyboard} from "./input.js";
 
@@ -7,9 +7,9 @@ const context = canvas.getContext("2d");
 Settings.SCREEN_HEIGHT = canvas.height;
 Settings.SCREEN_WIDTH = canvas.width;
 
-loadImage('./img/sprites.png')
-.then(image=>{
-    const buster = loadBuster(image);
+Promise.all([loadImage('./img/sprites.png'),loadLevel('1')])
+    .then( ([image,levelSpec]) => {
+    const buster = loadBuster(image, levelSpec.player);
 
     let deltaTime = 0;
     let lastTime = 0;
