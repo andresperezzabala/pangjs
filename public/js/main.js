@@ -1,4 +1,5 @@
 import {loadBuster, loadImage} from "./loaders.js";
+import {Keyboard} from "./Keyboard.js";
 
 const canvas = document.getElementById("screen");
 const context = canvas.getContext("2d");
@@ -17,5 +18,12 @@ loadImage('./img/sprites.png')
         lastTime = time;
         requestAnimationFrame(update);
     }
+
+    const input = new Keyboard();
+    input.listenTo(window);
+    input.addMapping('Space',keyState =>{
+        console.log(keyState);
+    });
+
     update(0);
 });
