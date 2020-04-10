@@ -23,6 +23,7 @@ export function loadImage(url){
 
 export function  loadBuster(image,playerSpec) {
     const spriteSheet = new SpriteSheet(image,32,32);
+    spriteSheet.define('idle',4,0);
     spriteSheet.define('buster',0,0);
     spriteSheet.define('buster-1',1,0);
     spriteSheet.define('buster-2',2,0);
@@ -48,5 +49,26 @@ export function loadHookManager(image, hooks) {
             spriteSheet.define('hook',0,0);
             hooks.add( new Hook(0, position, HookType.rope, spriteSheet.get('hook')));
         }
+    }
+}
+
+export function loadBackground(backgrounds) {
+
+    const buffer = document.createElement('canvas');
+    buffer.width = 256;
+    buffer.height = 192;
+
+    // recortar super-sprite y dejarlo preparado en un buffer
+    const context = buffer.getContext("2d");
+    context.drawImage(backgrounds, 0, 0,
+        buffer.width, buffer.height,
+        0, 0, buffer.width, buffer.height,);
+
+    return function(ctx) {
+        ctx.drawImage(buffer,
+            0, 0,
+            buffer.width, buffer.height,
+            0, 0,
+            Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
     }
 }

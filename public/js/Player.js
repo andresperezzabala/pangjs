@@ -1,7 +1,7 @@
 import {Object2D, Vec2D} from "./math.js";
 import Settings from "./Settings.js";
 
-const  frame = ['buster','buster-1','buster-2','buster-3']
+const  frame = ['idle','buster','buster-1','buster-2','buster-3']
 
 export default class Player extends Object2D {
 
@@ -12,7 +12,7 @@ export default class Player extends Object2D {
             return frameName;
         }
 
-        return 'buster';
+        return 'idle';
     }
 
     constructor(size, pos, spriteSheet) {
@@ -64,7 +64,7 @@ export default class Player extends Object2D {
 
         // si buster se sale por la parte inferior de la pantalla
         // position = x, lo más abajo sin salirse
-        if (this.y > Settings.SCREEN_HEIGHT - this.size.y) this.position.y = Settings.SCREEN_HEIGHT - this.size.y;
+        if (this.y > Settings.SCREEN_HEIGHT - this.size.y - Settings.MARGIN) this.position.y = Settings.SCREEN_HEIGHT - this.size.y - Settings.MARGIN;
 
     }
 
