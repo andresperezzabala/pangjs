@@ -27,7 +27,7 @@ export default class Player extends Object2D {
     // time respresenta el tiempo que ha pasado desde la última ejecución
     update(time) {
 
-        if (this.direction.x != 0){
+        if (this.direction.x !== 0){
             this.distance += Settings.PLAYER_SPEED * time;
         }else{
             this.distance = 0;
@@ -71,5 +71,13 @@ export default class Player extends Object2D {
     draw(context) {
         // pintar this.sprite en el contexto (en posicion x,y)
         context.drawImage(this.spriteSheet.get(this.routeFrame()),this.x,this.y);
+    }
+
+    setHookManager(hookManager){
+        this.hookManager = hookManager;
+    }
+
+    shoot(){
+        this.hookManager(new Vec2D(this.x + this.size.x/2, Settings.SCREEN_HEIGHT));
     }
 }

@@ -52,6 +52,7 @@ class Ball extends Object2D {
     get vel(){
         return this.force;
     }
+
 }
 
 export {Ball};

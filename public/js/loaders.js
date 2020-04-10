@@ -2,6 +2,8 @@ import SpriteSheet from "./SpriteSheet.js";
 import Player from "./Player.js";
 import {Vec2D} from "./math.js";
 import {Ball} from "./Ball.js";
+import {Hook, HookType} from "./Hook.js";
+import Settings from "./Settings.js";
 
 export function loadLevel(currentLevel) {
     return fetch('levels/' +  currentLevel + '.json').then(r => r.json());
@@ -37,4 +39,12 @@ export function loadBalls(ballsSpec) {
     let balls = [];
     ballsSpec.forEach(ball => balls.push(new Ball(ball.radius, new Vec2D(ball.pos[0],ball.pos[1]), new Vec2D(ball.force[0], ball.force[1]))));
     return balls;
+}
+
+export function loadHookManager(image, hooks) {
+    return function (position) {
+        const spriteSheet = new SpriteSheet(image,image.width,image.height);
+        spriteSheet.define('hook',0,0);
+        hooks.push( new Hook(0, position, HookType.rope, spriteSheet.get('hook')));
+    }
 }

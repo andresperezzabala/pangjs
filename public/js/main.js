@@ -1,19 +1,24 @@
-import {loadBalls, loadBuster, loadImage, loadLevel} from "./loaders.js";
+import {loadBalls, loadBuster, loadHookManager, loadImage, loadLevel} from "./loaders.js";
 import Settings from "./Settings.js";
 import {setupKeyboard} from "./input.js";
+import {CollisionManager} from "./collisions.js";
 
 const canvas = document.getElementById("screen");
 const context = canvas.getContext("2d");
 Settings.SCREEN_HEIGHT = canvas.height;
 Settings.SCREEN_WIDTH = canvas.width;
 
-Promise.all([loadImage('./img/sprites.png'),loadLevel('1')])
-    .then( ([image,levelSpec]) => {
-    const buster = loadBuster(image, levelSpec.player);
+Promise.all([loadImage('./img/sprites.png'), loadImage('./img/hookRope.png'),loadLevel('1')])
+    .then( ([playerImage,hookImage,levelSpec]) => {
+    const hooks = [];
+    const hookManager = loadHookManager(hookImage, hooks);
+    const buster = loadBuster(playerImage, levelSpec.player);
+    buster.setHookManager(hookManager);
     const balls = loadBalls(levelSpec.balls);
 
     let deltaTime = 0;
     let lastTime = 0;
+    let collision;
     function update(time) {
         deltaTime = time - lastTime;
         context.clearRect(0,0,canvas.width,canvas.height);
@@ -23,6 +28,12 @@ Promise.all([loadImage('./img/sprites.png'),loadLevel('1')])
             ball.draw(context);
             ball.update(deltaTime/1000);
         });
+        hooks.forEach( hook => {
+            hook.draw(context);
+            hook.update(deltaTime/1000);
+        });
+        collision = new CollisionManager(hooks,balls);
+        collision.checkCollisions();
         lastTime = time;
         requestAnimationFrame(update);
     }

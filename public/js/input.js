@@ -3,7 +3,7 @@ import {Keyboard} from "./Keyboard.js";
 export function setupKeyboard(buster) {
     const input = new Keyboard();
     input.addMapping('Space',keyState =>{
-        //console.log(keyState);
+        buster.shoot();
     });
     input.addMapping('ArrowDown',keyState=>{
 
