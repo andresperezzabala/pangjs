@@ -36,15 +36,17 @@ export function  loadBuster(image,playerSpec) {
 }
 
 export function loadBalls(ballsSpec) {
-    let balls = [];
-    ballsSpec.forEach(ball => balls.push(new Ball(ball.radius, new Vec2D(ball.pos[0],ball.pos[1]), new Vec2D(ball.force[0], ball.force[1]))));
+    let balls = new Set();
+    ballsSpec.forEach(ball => balls.add(new Ball(ball.radius, new Vec2D(ball.pos[0],ball.pos[1]), new Vec2D(ball.force[0], ball.force[1]))));
     return balls;
 }
 
 export function loadHookManager(image, hooks) {
     return function (position) {
-        const spriteSheet = new SpriteSheet(image,image.width,image.height);
-        spriteSheet.define('hook',0,0);
-        hooks.push( new Hook(0, position, HookType.rope, spriteSheet.get('hook')));
+        if (hooks.size < Settings.MAX_HOOKS){
+            const spriteSheet = new SpriteSheet(image,image.width,image.height);
+            spriteSheet.define('hook',0,0);
+            hooks.add( new Hook(0, position, HookType.rope, spriteSheet.get('hook')));
+        }
     }
 }

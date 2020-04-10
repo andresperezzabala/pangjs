@@ -10,7 +10,7 @@ Settings.SCREEN_WIDTH = canvas.width;
 
 Promise.all([loadImage('./img/sprites.png'), loadImage('./img/hookRope.png'),loadLevel('1')])
     .then( ([playerImage,hookImage,levelSpec]) => {
-    const hooks = [];
+    const hooks = new Set();
     const hookManager = loadHookManager(hookImage, hooks);
     const buster = loadBuster(playerImage, levelSpec.player);
     buster.setHookManager(hookManager);

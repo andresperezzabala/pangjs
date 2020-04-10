@@ -1,4 +1,7 @@
 import {Vec2D} from "./math.js";
+import Settings from "./Settings.js";
+import {Ball} from "./Ball.js";
+import {Hook} from "./Hook.js";
 
 function calc_angle(point){
     /*
@@ -174,18 +177,30 @@ function ball_to_box(ball, box, solid = false){
 }
 
 class CollisionManager {
+
     constructor(hooks,balls) {
         this.hooks = hooks;
         this.balls = balls;
     }
+
     checkCollisions(){
-        this.balls.forEach( ball => {
-            this.hooks.forEach( hook =>  {
+        this.hooks.forEach( hook => {
+            this.balls.forEach( ball =>  {
                 if (ball_to_box(ball, hook)){
-                    console.log("pang!");
+                    this.balls.delete(ball);
+                    this.hooks.delete(hook);
+                    this.split_ball(ball);
                 }
             });
+            if (hook.to_kill) this.hooks.delete(hook);
         });
+    }
+
+    split_ball(ball){
+        if(ball.radius > Settings.MIN_BALL_RADIUS){
+            this.balls.add(new Ball(ball.radius/2, ball.position, new Vec2D(ball.force.x * 1, ball.force.y)));
+            this.balls.add(new Ball(ball.radius/2, ball.position, new Vec2D(ball.force.x * -1,ball.force.y)));
+        }
 
     }
 }
