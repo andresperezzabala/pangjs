@@ -1,4 +1,4 @@
-import {loadBalls, loadBuster, loadHookManager, loadImage, loadLevel} from "./loaders.js";
+import {loadBackground, loadBalls, loadBuster, loadHookManager, loadImage, loadLevel} from "./loaders.js";
 import Settings from "./Settings.js";
 import {setupKeyboard} from "./input.js";
 import {CollisionManager} from "./collisions.js";
@@ -8,10 +8,11 @@ const context = canvas.getContext("2d");
 Settings.SCREEN_HEIGHT = canvas.height;
 Settings.SCREEN_WIDTH = canvas.width;
 
-Promise.all([loadImage('./img/sprites.png'), loadImage('./img/hookRope.png'),loadLevel('1')])
-    .then( ([playerImage,hookImage,levelSpec]) => {
+Promise.all([loadImage('./img/sprites.png'), loadImage('./img/hookRope.png'), loadImage('./img/backgrounds.png'),loadLevel('1')])
+    .then( ([playerImage,hookImage,backgrounds,levelSpec]) => {
     const hooks = new Set();
     const hookManager = loadHookManager(hookImage, hooks);
+    const drawBackground = loadBackground(backgrounds);
     const buster = loadBuster(playerImage, levelSpec.player);
     buster.setHookManager(hookManager);
     const balls = loadBalls(levelSpec.balls);
@@ -21,7 +22,7 @@ Promise.all([loadImage('./img/sprites.png'), loadImage('./img/hookRope.png'),loa
     let collision;
     function update(time) {
         deltaTime = time - lastTime;
-        context.clearRect(0,0,canvas.width,canvas.height);
+        drawBackground(context);
         buster.draw(context);
         buster.update(deltaTime/1000);
         balls.forEach( ball => {
